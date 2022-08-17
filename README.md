@@ -16,7 +16,24 @@
 </div>
 
 #
-<div>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/python/python-original-wordmark.svg" 
+       height="70" width="70"/>
+  <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" 
+       height="70" width="70"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/mysql/mysql-original-wordmark.svg" 
+       height="70" width="70"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/postgresql/postgresql-original-wordmark.svg" 
+       height="70" width="70"/>
+  <img src="https://azurecomcdn.azureedge.net/cvt-022c6b3f5aa15dd5aabc3c381fef132a77ef2d97aecee219f30198d4ea83c327/svg/synapse-analytics.svg" 
+       height="70" width="70"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/azure/azure-original-wordmark.svg" 
+       height="70" width="70"/>
+  <img src="https://spark.apache.org/images/spark-logo-rev.svg" 
+       height="70" width="70"/>
+    
+#
+<div align="left">
     <a href="mailto:christiansgoncalves@gmail.com"><img
             src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white"
             target="_blank"></a>
