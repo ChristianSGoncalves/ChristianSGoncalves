@@ -1,8 +1,8 @@
-<h3 align="left">Olá 👋! Sou Christian Gonçalves, moro em São Paulo, Engenheiro de dados com oito anos de experiência
-    interpretando e analisando dados, gerando
-    valor para os negócios aliado à um solido conhecimento funcional e operacional adquirido na
-    prática. Iniciei a trajetória na área de dados de forma autodidata onde aprofundei os
-    conhecimentos através de cursos palestras e mentorias.<br><br> 
+<h3 align="left">Hello 👋! I'm Christian Gonçalves, I live in São Paulo, Data Engineer with eight years of experience
+     interpreting and analyzing data, generating
+     value for the business allied to a solid functional and operational knowledge acquired in the
+     practice. I started my career in the data area in a self-taught way where I deepened the
+     knowledge through courses, lectures and mentoring<br><br> 
 </h3>
   
 # 📊GitHub Stats : 
@@ -15,7 +15,7 @@
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ChristianSGoncalves&langs_count_private=true&theme=radical&card_width=445)<br><br>  
 </div>
 
-#
+# 🛠️Tools and Technologies : 
 <div align="center">
   <img src="https://raw.githubusercontent.com/devicons/devicon/1119b9f84c0290e0f0b38982099a2bd027a48bf1/icons/python/python-original-wordmark.svg" 
        height="70" width="70"/>
@@ -41,3 +41,7 @@
             src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white"
             target="_blank"></a>
 </div>
+
+<!-- Documentation
+    https://docs.github.com/pt/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes
+>
