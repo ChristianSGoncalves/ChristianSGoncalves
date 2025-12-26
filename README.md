@@ -1,4 +1,4 @@
-<h3 align="left">Hello 👋! I'm Christian Gonçalves, I live in São Paulo, Data Engineer with eight years of experience
+<h3 align="left">Hello 👋! I'm Christian Gonçalves, I live in São Paulo, Data Engineer with <!--YEARS_OF_EXPERIENCE-->
      interpreting and analyzing data, generating
      value for the business allied to a solid functional and operational knowledge acquired in the
      practice. I started my career in the data area in a self-taught way where I deepened the
