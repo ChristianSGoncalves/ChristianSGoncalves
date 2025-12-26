@@ -23,8 +23,8 @@ jobs:
           from zoneinfo import ZoneInfo
           import os
 
-          # >>> SET YOUR EXACT START DATE <<<
-          START_DATE_STR = "2014-01-01"  # YYYY-MM-DD
+          # >>> SET YOUR EXACT START DATE (YYYY-MM-DD) <<<
+          START_DATE_STR = "2013-11-01"
 
           start = datetime.strptime(START_DATE_STR, "%Y-%m-%d").date()
           today = datetime.now(ZoneInfo("America/Sao_Paulo")).date()
@@ -36,14 +36,14 @@ jobs:
               months = today.month - start.month
               days   = today.day   - start.day
 
-              # Borrow days from previous month when needed
+              # Borrow days from previous month if needed
               if days < 0:
                   first_of_month = today.replace(day=1)
                   prev_month_last_day = (first_of_month - timedelta(days=1)).day
                   days += prev_month_last_day
                   months -= 1
 
-              # Borrow months from previous year when needed
+              # Borrow months from previous year if needed
               if months < 0:
                   months += 12
                   years -= 1
@@ -54,7 +54,6 @@ jobs:
           phrase = f"{unit(years,'year','years')}, {unit(months,'month','months')}, and {unit(days,'day','days')}"
           print("Computed experience:", phrase)
 
-          # Export to GitHub Actions outputs
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
               f.write(f"EXPERIENCE_YMD={phrase}\n")
           PY
@@ -79,7 +78,6 @@ jobs:
             exit 1
           fi
 
-          # Perform replacement via Python to avoid sed quoting issues
           python - <<'PY'
           import os
           path = "README.md"
@@ -88,11 +86,11 @@ jobs:
               content = f.read()
           new_content = content.replace("<!--YEARS_OF_EXPERIENCE-->", value)
           if new_content != content:
-            with open(path, "w", encoding="utf-8") as f:
-              f.write(new_content)
-            print("UPDATED")
+              with open(path, "w", encoding="utf-8") as f:
+                  f.write(new_content)
+              print("UPDATED")
           else:
-            print("NOCHANGE")
+              print("NOCHANGE")
           PY
 
           # Emit a flag so the next step knows whether to commit
@@ -100,20 +98,19 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Commit & push if changed
         shell: bash
         run: |
           set -euo pipefail
-          # Read the flag from previous step by querying git instead of depending on step outputs
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md
-            # Use the compute output again safely (empty becomes N/A to avoid '')
             EXP="${{ steps.compute.outputs.EXPERIENCE_YMD }}"
-            if [[ -z "${EXP}" ]]; then EXP="N/A"; fi
+            [[ -z "${EXP}" ]] && EXP="N/A"
             git commit -m "chore: update experience to '${EXP}'"
-            git push
+                       git push
           else
-            echo "No changes to commit            echo "No changes to commit."
+            echo "No changes to commit."
