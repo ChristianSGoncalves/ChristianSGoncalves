@@ -95,15 +95,18 @@ jobs:
               print("NOCHANGE")
           PY
 
+
       - name: Commit & push if changed
         shell: bash
         run: |
           set -euo pipefail
+          # Commit only if there are changes in the working tree
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md
 
+            # Experience text from previous step; fallback to N/A if empty
             EXP="${{ steps.compute.outputs.EXPERIENCE_YMD }}"
             if [[ -z "${EXP}" ]]; then
               EXP="N/A"
@@ -112,4 +115,4 @@ jobs:
             git commit -m "chore: update experience to '${EXP}'"
             git push
           else
-            echo "No changes to            echo "No changes to commit."
+            echo "No changes to commit."
