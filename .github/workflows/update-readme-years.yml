@@ -1,10 +1,9 @@
-
 name: Update experience (years, months, days) in README
 
 on:
   schedule:
-    - cron: "0 5 * * *"   # runs daily at 05:00 UTC; adjust if you wish
-  workflow_dispatch: {}    # allows manual runs from the Actions tab
+    - cron: "0 5 * * *"   # runs daily at 05:00 UTC; adjust if needed
+  workflow_dispatch: {}    # allows manual runs from Actions
 
 jobs:
   update-readme:
@@ -15,15 +14,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Compute years/months/days since start date (São Paulo timezone)
-        id: compute
+        shell: bash
         run: |
+          set -euo pipefail
           python - <<'PY'
           from datetime import datetime, timedelta
           from zoneinfo import ZoneInfo
           import os
 
           # >>> SET YOUR EXACT START DATE (YYYY-MM-DD) <<<
-          START_DATE_STR = "2014-01-01"  # e.g., "2014-03-01" if March 1st
+          START_DATE_STR = "2014-01-01"  # e.g., "2014-03-01"
 
           start = datetime.strptime(START_DATE_STR, "%Y-%m-%d").date()
           today = datetime.now(ZoneInfo("America/Sao_Paulo")).date()
@@ -58,11 +58,18 @@ jobs:
           PY
 
       - name: Replace placeholder in README.md
+        shell: bash
         env:
           VALUE: ${{ steps.compute.outputs.EXPERIENCE_YMD }}
         run: |
+          set -euo pipefail
+          README_PATH="README.md"
+          if [[ ! -f "$README_PATH" ]]; then
+            echo "File not found: $README_PATH"
+            exit 1
+          fi
           python - <<'PY'
-          import os
+          import os, sys
           path = "README.md"
           value = os.environ["VALUE"]
           with open(path, "r", encoding="utf-8") as f:
@@ -71,15 +78,21 @@ jobs:
           if content_new != content:
               with open(path, "w", encoding="utf-8") as f:
                   f.write(content_new)
+              print("UPDATED")
+          else:
+              print("NOCHANGE")
           PY
 
       - name: Commit & push if changed
+        shell: bash
         run: |
-          if [[ -n $(git status --porcelain) ]]; then
+          set -euo pipefail
+          # Check if file changed
+          if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md
             git commit -m "chore: update experience to '${{ steps.compute.outputs.EXPERIENCE_YMD }}'"
             git push
-                   else
+          else          else
             echo "No changes to commit."
