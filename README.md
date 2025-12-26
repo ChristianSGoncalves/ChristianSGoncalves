@@ -3,7 +3,7 @@
 
 **🌎 Location:** São Paulo  
 **💼 Role:** Data Engineer  
-**🗓️ Experience:** <!--YEARS_OF_EXPERIENCE--> interpreting and analyzing data
+**🗓️ Experience:** 12 years, 1 month, and 25 days interpreting and analyzing data
 
 ---
 

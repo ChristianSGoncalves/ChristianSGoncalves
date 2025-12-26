@@ -3,8 +3,8 @@ name: Update experience (years, months, days) in README
 
 on:
   schedule:
-    - cron: "0 5 * * *"   # runs daily at 05:00 UTC; adjust if you wish
-  workflow_dispatch: {}    # allows manual runs from the Actions tab
+    - cron: "0 5 * * *"   # runs daily at 05:00 UTC
+  workflow_dispatch: {}
 
 jobs:
   update-readme:
@@ -16,14 +16,16 @@ jobs:
 
       - name: Compute years/months/days since start date (São Paulo timezone)
         id: compute
+        shell: bash
         run: |
+          set -euo pipefail
           python - <<'PY'
           from datetime import datetime, timedelta
           from zoneinfo import ZoneInfo
           import os
 
-          # >>> SET YOUR EXACT START DATE (YYYY-MM-DD) <<<
-          START_DATE_STR = "2014-01-01"  # e.g., "2014-03-01" if March 1st
+          # Exact start date
+          START_DATE_STR = "2013-11-01"  # YYYY-MM-DD
 
           start = datetime.strptime(START_DATE_STR, "%Y-%m-%d").date()
           today = datetime.now(ZoneInfo("America/Sao_Paulo")).date()
@@ -51,6 +53,7 @@ jobs:
               return f"{n} {singular if n == 1 else plural}"
 
           phrase = f"{unit(years,'year','years')}, {unit(months,'month','months')}, and {unit(days,'day','days')}"
+          print("Computed experience:", phrase)
 
           # Export to GitHub Actions outputs
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
@@ -58,28 +61,58 @@ jobs:
           PY
 
       - name: Replace placeholder in README.md
+        shell: bash
         env:
           VALUE: ${{ steps.compute.outputs.EXPERIENCE_YMD }}
         run: |
+          set -euo pipefail
+          README_PATH="README.md"
+          echo "VALUE='${VALUE}'"
+
+          if [[ -z "${VALUE}" ]]; then
+            echo "ERROR: EXPERIENCE_YMD output is empty."
+            exit 1
+          fi
+
+          if [[ ! -f "${README_PATH}" ]]; then
+            echo "ERROR: File not found: ${README_PATH}"
+            exit 1
+          fi
+
+          # Update the placeholder using Python (avoids sed quoting issues)
           python - <<'PY'
           import os
           path = "README.md"
           value = os.environ["VALUE"]
           with open(path, "r", encoding="utf-8") as f:
               content = f.read()
-          content_new = content.replace("<!--YEARS_OF_EXPERIENCE-->", value)
-          if content_new != content:
+          new_content = content.replace("<!--YEARS_OF_EXPERIENCE-->", value)
+          if new_content != content:
               with open(path, "w", encoding="utf-8") as f:
-                  f.write(content_new)
+                  f.write(new_content)
+              print("UPDATED")
+          else:
+              print("NOCHANGE")
           PY
 
       - name: Commit & push if changed
+        shell: bash
         run: |
-          if [[ -n $(git status --porcelain) ]]; then
+          set -euo pipefail
+          # Commit only if there are changes in the working tree
+          if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md
-            git commit -m "chore: update experience to '${{ steps.compute.outputs.EXPERIENCE_YMD }}'"
+
+            # Experience text from previous step; fallback to N/A if empty
+            EXP="${{ steps.compute.outputs.EXPERIENCE_YMD }}"
+            if [[ -z "${EXP}" ]]; then
+              EXP="N/A"
+            fi
+
+            git commit -m "chore: update experience to '${EXP}'"
             git push
-                   else
+          else
             echo "No changes to commit."
+          fi
