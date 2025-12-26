@@ -1,3 +1,4 @@
+
 name: Update experience (years, months, days) in README
 
 on:
@@ -23,8 +24,8 @@ jobs:
           from zoneinfo import ZoneInfo
           import os
 
-          # >>> SET YOUR EXACT START DATE (YYYY-MM-DD) <<<
-          START_DATE_STR = "2013-11-01"
+          # Exact start date
+          START_DATE_STR = "2013-11-01"  # YYYY-MM-DD
 
           start = datetime.strptime(START_DATE_STR, "%Y-%m-%d").date()
           today = datetime.now(ZoneInfo("America/Sao_Paulo")).date()
@@ -54,12 +55,12 @@ jobs:
           phrase = f"{unit(years,'year','years')}, {unit(months,'month','months')}, and {unit(days,'day','days')}"
           print("Computed experience:", phrase)
 
+          # Export to GitHub Actions outputs
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
               f.write(f"EXPERIENCE_YMD={phrase}\n")
           PY
 
       - name: Replace placeholder in README.md
-        id: replace
         shell: bash
         env:
           VALUE: ${{ steps.compute.outputs.EXPERIENCE_YMD }}
@@ -78,6 +79,7 @@ jobs:
             exit 1
           fi
 
+          # Update the placeholder using Python (avoids sed quoting issues)
           python - <<'PY'
           import os
           path = "README.md"
@@ -93,13 +95,6 @@ jobs:
               print("NOCHANGE")
           PY
 
-          # Emit a flag so the next step knows whether to commit
-          if git status --porcelain | grep -q "README.md"; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Commit & push if changed
         shell: bash
         run: |
@@ -108,9 +103,13 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md
+
             EXP="${{ steps.compute.outputs.EXPERIENCE_YMD }}"
-            [[ -z "${EXP}" ]] && EXP="N/A"
+            if [[ -z "${EXP}" ]]; then
+              EXP="N/A"
+            fi
+
             git commit -m "chore: update experience to '${EXP}'"
-                       git push
+            git push
           else
-            echo "No changes to commit."
+            echo "No changes to            echo "No changes to commit."
