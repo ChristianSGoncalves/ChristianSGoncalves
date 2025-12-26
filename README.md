@@ -15,10 +15,7 @@ I started my career in data as a self-taught professional, deepening my knowledg
 ## 📊 GitHub Stats
 
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=ChristianSGoncalves&show_icons=true&count_private=true&include_all_commits=true&theme=radical" height="150" alt="stats graph" />
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=ChristianSGoncalves&theme=radical&hide_border=true" height="150" alt="languages graph" />
-  <br>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=ChristianSGoncalves&langs_count_private=true&theme=radical&card_width=445" alt="Top Langs" />
 </div>
 
 ## 🛠️ Tools and Technologies
@@ -39,4 +36,3 @@ I started my career in data as a self-taught professional, deepening my knowledg
 
 [![Gmail](https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white)](mailto:christiansgoncalves@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/christiansgoncalves)
-``
