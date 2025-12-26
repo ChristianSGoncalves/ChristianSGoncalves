@@ -111,7 +111,7 @@ jobs:
               EXP="N/A"
             fi
 
-            git commit -m "chore: update            git commit -m "chore: update experience to '${EXP}'"
+            git commit -m "chore: update experience to '${EXP}'"
             git push
           else
             echo "No changes to commit."
